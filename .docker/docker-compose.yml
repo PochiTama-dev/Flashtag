@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  backend:
+    restart: unless-stopped
+    build:
+      context: ../backend
+      dockerfile: .docker/Dockerfile
+    container_name: backend-container
+    environment:
+      - DATABASE_URL
+      - SECRET_KEY
+      - DEBUG
+    ports:
+      - "8006:8006"
+    env_file:
+      - ../frontend/.env
+      - ../backend/.env
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    restart: unless-stopped
+    image: mysql:8.0
+    container_name: db-container
+    environment:
+      MYSQL_DATABASE: flashtag_db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Permitir contraseña vacía
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../backend/db/scripts:/docker-entrypoint-initdb.d  # Montar el directorio de scripts
+
+  frontend:
+    restart: unless-stopped
+    build:
+      context: ../frontend
+      dockerfile: .docker/Dockerfile
+    container_name: frontend-container
+    environment:
+      - REACT_APP_API_URL
+      - REACT_APP_ENV
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../frontend/.env
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  monitor:
+    restart: unless-stopped
+    image: alpine
+    container_name: monitor-container
+    volumes:
+      - ../scripts:/scripts
+    entrypoint: /scripts/restart_containers.sh
+    depends_on:
+      - backend
+      - db
+      - frontend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local

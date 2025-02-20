@@ -1,0 +1,14 @@
+# Ignorar la carpeta node_modules en todos los subdirectorios
+**/node_modules/
+
+# Ignorar los archivos .env en todos los subdirectorios
+**/*.env
+
+# Ignorar los archivos de lock de npm
+**/package-lock.json
+
+# Ignorar los archivos de lock de yarn
+**/yarn.lock
+
+# Ignorar los archivos de log de npm
+**/npm-debug.log
