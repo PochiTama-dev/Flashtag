@@ -1,0 +1,62 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  color: #333;
+  text-align: left;
+}
+
+.row {
+  display: flex;
+ 
+}
+
+.field {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 4px;
+}
+
+input,
+select,
+textarea {
+  padding: 8px;
+  font-size: 16px;
+  margin: 10px;
+}
+
+ 
+select  {
+ width: 200px;
+ position: relative;
+}
+
+select:focus {
+  outline: none;
+}
+
+select option {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.ssid-inscription {
+  display: flex;
+  justify-content: space-between;
+}
+
+.error {
+  border: 1px solid red;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
