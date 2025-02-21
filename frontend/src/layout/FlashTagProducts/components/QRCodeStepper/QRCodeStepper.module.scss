@@ -1,0 +1,58 @@
+.stepper {
+  display: flex;
+  flex-direction: row;
+}
+
+.qrCodeContainer {
+  flex: 1;
+  margin-right: 20px;
+  color: #333;
+  border: solid 1px #E0E0E0;
+  border-radius: 10px;
+  padding: 10%;
+}
+
+.stepsContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.step {
+  padding: 10px 20px;
+  background-color: #E0E0E0;
+  margin: 0 5px;
+  font-weight: bold;
+  color: #666;
+  position: relative;
+  clip-path: polygon(0 0, 80% 0, 100% 50%, 80% 100%, 0 100%);
+}
+
+.active {
+  background-color: #09914F;
+  color: white;
+  clip-path: polygon(0 0, 80% 0, 100% 50%, 80% 100%, 0 100%);
+}
+.stepsButtons {
+  display: flex;
+  justify-content: flex-end;
+  button{
+    margin: 10px 15px;
+  }
+}
+.qrCode{
+  border: solid 1px #B4B4B4;
+  border-radius: 10px;
+  padding:  40px 10px;
+}
+.stepContent {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.downloadContainer {
+  display: flex;
+  justify-content: center;
+}
