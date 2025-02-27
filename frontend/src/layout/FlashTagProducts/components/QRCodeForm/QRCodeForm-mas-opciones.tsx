@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
  
 import styles from "./QRCodeForm.module.scss";
-
+import { Typography } from "../../../../components";
 const generateRandomText = () => {
   return Math.random().toString(36).substring(2, 15);
 };
@@ -111,7 +111,7 @@ const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
       </div> */}
     
       <div>
-        <label>Tipo de esquinas</label>
+        <Typography variant="normal-bold">Tipo de esquinas</Typography>
         <div className={styles.cornerSquareTypes}>
           {cornerSquareTypes.map((type) => (
             <img
@@ -128,18 +128,16 @@ const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
         </div>
       </div>
        <div>
-        <label>
-          Color de esquinas
-          <input
-            type="text"
-            value={cornerSquareColor}
-            onChange={(e) => {
-              setCornerSquareColor(e.target.value);
-              updateQrCodeOptions();
-            }}
-            placeholder="#000000"
-          />
-        </label>
+        <Typography variant="normal-bold">Color de esquinas</Typography>
+        <input
+          type="text"
+          value={cornerSquareColor}
+          onChange={(e) => {
+            setCornerSquareColor(e.target.value);
+            updateQrCodeOptions();
+          }}
+          placeholder="#000000"
+        />
         <div className={styles.colorPicker}>
           {["#000000",   "#595959", "#1776F2", "#C32629", "#CD17F2", "#7526C3", "#3CC326"].map((color) => (
             <div
@@ -185,26 +183,22 @@ const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
         </div>
       </div> */}
       <div>
-        <label>
-          Seleccionar un logo de red social:
-          <select onChange={(e) => {
-            setImage(e.target.value);
-            updateQrCodeOptions();
-          }} value={image}>
-            <option value="">Selecciona un logo</option>
-            {defaultImages.map((img, index) => (
-              <option key={index} value={img.url}>
-                {img.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Typography variant="normal-bold">Seleccionar un logo de red social:</Typography>
+        <select onChange={(e) => {
+          setImage(e.target.value);
+          updateQrCodeOptions();
+        }} value={image}>
+          <option value="">Selecciona un logo</option>
+          {defaultImages.map((img, index) => (
+            <option key={index} value={img.url}>
+              {img.label}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
-        <label>
-          Cargar una imagen desde tu PC:
-          <input type="file" onChange={handleImageChange} />
-        </label>
+        <Typography variant="normal-bold">Cargar una imagen desde tu PC:</Typography>
+        <input type="file" onChange={handleImageChange} />
       </div>
      {/*  <div>
         <label>

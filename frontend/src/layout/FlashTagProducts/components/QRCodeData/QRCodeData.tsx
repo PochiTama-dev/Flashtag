@@ -1,10 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styles from "./QRCodeData.module.scss";
-import { categorias } from "./constants";
+import { AppContext } from "../../../../context/AppContext";
+import { Typography } from "../../../../components";
 
-const QRCodeData = () => {
+type QRCodeDataProps = {
+  setQrCodeOptions: React.Dispatch<React.SetStateAction<{
+    width: number;
+    height: number;
+    data: string;
+    dotsOptions: { color: string; type: string; };
+    cornersSquareOptions: { color: string; type: string; };
+    cornersDotOptions: { color: string; type: string; };
+    imageOptions: { crossOrigin: string; hideBackgroundDots: boolean; imageSize: number; margin: number; };
+    image: string;
+  }>>;
+};
+const QRCodeData: React.FC<QRCodeDataProps> = ({ setQrCodeOptions }) => {
+  const { qrTags } = useContext(AppContext);
   const [type, setType] = useState("wifi");
-  const [category, setCategory] = useState("cartel");
+  const [category, setCategory] = useState("");
   const [password, setPassword] = useState("");
   const [url, setUrl] = useState("");
   const [ssid, setSsid] = useState("");
@@ -12,10 +26,10 @@ const QRCodeData = () => {
   const [campaign, setCampaign] = useState("");
   const [scanLimit, setScanLimit] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-  const [urlError, setUrlError] = useState(false);
+/*   const [urlError, setUrlError] = useState(false); */
 
   useEffect(() => {
-    const savedData = JSON.parse(localStorage.getItem("qrdata"));
+    const savedData = JSON.parse(localStorage.getItem("qrdata") || '{}');
     if (savedData) {
       setType(savedData.type);
       setCategory(savedData.category);
@@ -29,26 +43,30 @@ const QRCodeData = () => {
   }, []);
 
   useEffect(() => {
-    const data = { type, category, password, url, ssid, inscription, campaign, scanLimit };
+    const data = { type, category, password,/*  url, */ ssid, inscription, campaign, scanLimit };
     localStorage.setItem("qrdata", JSON.stringify(data));
-  }, [type, category, password, url, ssid, inscription, campaign, scanLimit]);
+    setQrCodeOptions((prevOptions) => ({
+      ...prevOptions,
+      data: url || ssid,
+    }));
+  }, [type, category, password, /* url,  */ssid, inscription, campaign, scanLimit, setQrCodeOptions]);
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setPassword(value);
     setPasswordError(value.length < 7);
   };
 
-  const handleUrlChange = (e) => {
+/*   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setUrl(value);
     setUrlError(!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value));
   };
-
+ */
   return (
     <form className={styles.form}>
-      <h2>Datos del QR</h2>
-      <p>Completa los datos correspondientes.</p>
+      <Typography variant="title-mid">Datos del QR</Typography>
+      <Typography variant="subtitle">Completa los datos correspondientes.</Typography>
       
       <div className={styles.row}>
         <div className={styles.field}>
@@ -68,9 +86,9 @@ const QRCodeData = () => {
           <div className={styles.field}>
             <label>Categoría*</label>
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
-              {categorias.map((categoria) => (
-                <option key={categoria.id} value={categoria.id}>
-                  {categoria.label}
+              {qrTags.map((tag) => (
+                <option key={tag.id} value={tag.id}>
+                  {tag.name}
                 </option>
               ))}
             </select>
@@ -107,18 +125,7 @@ const QRCodeData = () => {
         </div>
       )}
 
-      <div className={styles.field}>
-        <label>Campaña*</label>
-        <input
-          type="text"
-          placeholder="Nombre de la campaña"
-          value={campaign}
-          onChange={(e) => setCampaign(e.target.value)}
-          required
-        />
-      </div>
-
-      {type !== "wifi" && (
+{/*       {type !== "wifi" && (
         <div className={styles.field}>
           <label>Link QR*</label>
           <input
@@ -131,7 +138,7 @@ const QRCodeData = () => {
           />
           {urlError && <span className={styles.errorMessage}>Debe ser una URL válida.</span>}
         </div>
-      )}
+      )} */}
 
       <div className={styles.row}>
         <div className={styles.field}>

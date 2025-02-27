@@ -1,21 +1,22 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import QRCodeStyling from "qr-code-styling";
+import { DotType, CornerSquareType, CornerDotType } from "qr-code-styling/lib/types";
 import QRCodeForm from "../QRCodeForm/QRCodeForm";
 import QRCodePreview from "../QRCodePreview/QRCodePreview";
 import styles from "./QRCodeEditor.module.scss";
-
+ 
 const QRCodeEditor = () => {
   const [text, setText] = useState("");
-  const [dotType, setDotType] = useState("square");
+  const [dotType, setDotType] = useState<DotType>("square");
   const [cornerSquareColor, setCornerSquareColor] = useState("#000000");
   const [cornerDotColor, setCornerDotColor] = useState("#000000");
-  const [cornerSquareType, setCornerSquareType] = useState("square");
-  const [cornerDotType, setCornerDotType] = useState("square");
+  const [cornerSquareType, setCornerSquareType] = useState<CornerSquareType>("square");
+  const [cornerDotType, setCornerDotType] = useState<CornerDotType>("square");
   const [image, setImage] = useState("");
   const [imageSize, setImageSize] = useState(0.4);
   const [imageMargin, setImageMargin] = useState(0);
   const qrCodeRef = useRef(null);
-  const qrCodeInstance = useRef(null);
+  const qrCodeInstance = useRef<QRCodeStyling | null>(null);
 
   const createQRCode = useCallback(() => {
     const options = {
@@ -38,7 +39,9 @@ const QRCodeEditor = () => {
       qrCodeInstance.current.update(options);
     } else {
       qrCodeInstance.current = new QRCodeStyling(options);
-      qrCodeInstance.current.append(qrCodeRef.current);
+      if (qrCodeRef.current) {
+        qrCodeInstance.current.append(qrCodeRef.current);
+      }
     }
   }, [
     text,

@@ -2,7 +2,7 @@ import { useRef } from "react";
  
 import QRCodeStyling from "qr-code-styling";
 import styles from "./QRCodeDownload.module.scss";
-
+import { Button } from "../../../../components";
 interface QRCodeOptions {
  
  
@@ -20,7 +20,7 @@ const QRCodeDownload = ({ qrCodeOptions }: { qrCodeOptions: QRCodeOptions }) => 
 
   return (
     <div className={styles.downloadContainer}>
-      <button onClick={downloadQRCode}>Descargar QR</button>
+      <Button type='white' onClick={downloadQRCode}>Descargar QR</Button>
     </div>
   );
 };

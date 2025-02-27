@@ -1,31 +1,49 @@
+@use "@styles/colors" as *;
+
 .button {
   padding: 12px 25px;
-  font-size: 16px;
+  font-size: 14px;
   border: none;
   cursor: pointer;
   line-height: 24px;
   border-radius: 8px;
-  width: 144px;
+  min-width: 144px;
   height: 48px;
   transition: background-color 0.3s;
   font-weight: bold;
+  &.green {
+    background-color: $secondary;
+    color: $white;
+  }
+
+  &.white {
+    background-color: $white;
+    color: $black;
+    border: 1px solid $tertiary;
+  }
+
   &.primary {
-    background-color: #0a9250;
-    color: white;
+    background-color: $primary;
+    color: $white;
   }
 
-  &.secondary {
-    background-color: white;
-    color: black;
-    border: 1px solid #D7D7D7;
+  &.blue {
+    background-color: $blue;
+    color: $white;
   }
 
-  &.tertiary {
-    background-color: #603fc1;
-    color: white;
+  &.red {
+    background-color: $danger;
+    color: $white;
   }
 
   &:hover {
     opacity: 0.8;
+  }
+
+  &:disabled {
+    background-color: $grey;
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 }

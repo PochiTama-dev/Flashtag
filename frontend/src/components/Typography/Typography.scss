@@ -1,0 +1,53 @@
+.typography {
+ &.title {
+  font-size: 32px;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+ }
+ &.title-mid {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: "Poppins", sans-serif;
+   }
+ &.title-small {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: "Poppins", sans-serif;
+   }
+ &.subtitle {
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+ }
+ &.normal{
+    font-size: 14px;
+ 
+    font-family: "Poppins", sans-serif;
+   }
+ &.normal-bold {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+ }
+ &.normal-small {
+  font-size: 12px;
+  font-family: "Poppins", sans-serif;
+ }
+ &.h1 {
+  font-size: 2em;
+  font-weight: bold;
+ }
+ &.h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+ }
+ &.h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+ }
+ &.body1 {
+  font-size: 1em;
+ }
+ &.body2 {
+  font-size: 0.83em;
+ }
+}
