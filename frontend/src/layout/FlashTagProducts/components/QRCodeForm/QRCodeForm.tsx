@@ -1,36 +1,44 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
- 
 import styles from "./QRCodeForm.module.scss";
-
+import { Typography } from "../../../../components";
+import {saveQrCode} from '../../../../../mockdata/qrCodeApiFetch';
 const generateRandomText = () => {
  return Math.random().toString(36).substring(2, 15);
 };
-
+ 
 interface QRCodeFormProps {
- setQrCodeOptions: (options: {
-   width: number;
-   height: number;
-   data: string;
-   dotsOptions: { color: string; type: string };
-   cornersSquareOptions: { color: string; type: string };
-   cornersDotOptions: { color: string; type: string };
-   imageOptions: { crossOrigin: string; hideBackgroundDots: boolean; imageSize: number; margin: number };
-   image: string;
- }) => void;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  setDotType: React.Dispatch<React.SetStateAction<DotType>>;
+
+  setQrCodeOptions: (options: {
+    width: number;
+    height: number;
+    data: string;
+    dotsOptions: { color: string; type: DotType };
+    cornersSquareOptions: { color: string; type: CornerSquareType };
+    cornersDotOptions: { color: string; type: CornerDotType };
+    imageOptions: { crossOrigin: string; hideBackgroundDots: boolean; imageSize: number; margin: number };
+    image: string;
+  }) => void;
+  // other props
 }
+// Define the DotType and CornerSquareType types
+type CornerSquareType = "square" | "rounded" | "classy-rounded" | "classy" | "extra-rounded" | "dot";
+type DotType = "square" | "rounded" | "classy-rounded" | "classy" | "extra-rounded" | "dot";
+type CornerDotType = "square" | "rounded" | "classy-rounded" | "classy" | "extra-rounded" | "dot";
 
 const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
  const [text, setText] = useState(generateRandomText());
- const [dotType, setDotType] = useState("square");
+ const [dotType] = useState<DotType>("square");
  const [cornerSquareColor, setCornerSquareColor] = useState("#000000");
- const [cornerDotColor, setCornerDotColor] = useState("#000000");
- const [cornerSquareType, setCornerSquareType] = useState("square");
- const [cornerDotType, setCornerDotType] = useState("square");
+ const [cornerDotColor] = useState("#000000");
+ const [cornerSquareType, setCornerSquareType] = useState<CornerSquareType>("square");
+ const [cornerDotType] = useState<CornerDotType>("square");
  const [image, setImage] = useState("");
- const [imageSize, setImageSize] = useState(0.4);
- const [imageMargin, setImageMargin] = useState(0);
+ const [imageSize] = useState(0.4);
+ const [imageMargin] = useState(0);
 
 interface FileInputEvent extends React.ChangeEvent<HTMLInputElement> {
  target: HTMLInputElement & EventTarget;
@@ -93,8 +101,47 @@ const defaultImages = [
   // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [text, dotType, cornerSquareColor, cornerDotColor, cornerSquareType, cornerDotType, image, imageSize, imageMargin]);
 
+const handleSaveQrCode = async () => {
+  const qrDataString = localStorage.getItem("qrdata");
+  if (!qrDataString) {
+    alert("No se encontraron datos de QR en el almacenamiento local.");
+    return;
+  }
+
+  const qrData = JSON.parse(qrDataString);
+
+  if (window.confirm("¿Deseas continuar y guardar el código QR?")) {
+    const qrCodeData = {
+ 
+      id_qr_type: 1, 
+      id_qr_tag: 1, 
+      id_product: 1, 
+      id_analytics: 1,  
+      id_template: 1,  
+      id_social_network: 1,  
+   
+     
+      social_network_code: qrData.social_network_code || "exampleSocialNetworkCode", 
+      scan_limit: qrData.scanLimit || 0, 
+      image: 'uploads/example-image.jpg',  
+    };
+
+    const savedQrCode = await saveQrCode(qrCodeData);
+    if (savedQrCode) {
+      alert("Código QR guardado exitosamente.");
+    } else {
+      alert("Error al guardar el código QR. Inténtalo de nuevo.");
+    }
+  }
+};
  return (
   <div className={styles.formContainer}>
+    <div className={styles.titleContainer}>
+
+       <Typography variant="title-mid">Personalizar QR</Typography>
+      <Typography variant="subtitle">Selecciona lo que mas te guste.</Typography>
+    </div>
+      
    <input
     type='text'
     value={text}
@@ -115,7 +162,7 @@ const defaultImages = [
        alt={type.label}
        className={cornerSquareType === type.value ? styles.selected : ""}
        onClick={() => {
-        setCornerSquareType(type.value);
+        setCornerSquareType(type.value as CornerSquareType);
         updateQrCodeOptions();
        }}
       />
@@ -176,6 +223,7 @@ const defaultImages = [
      <input type='file' onChange={handleImageChange} />
     </label>
    </div>
+   <button onClick={handleSaveQrCode}>Siguiente</button>
   </div>
  );
 };

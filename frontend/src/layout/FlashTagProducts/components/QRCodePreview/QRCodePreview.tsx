@@ -4,12 +4,11 @@ import QRCodeStyling from "qr-code-styling";
 import styles from "./QRCodePreview.module.scss";
 
 interface QRCodeOptions {
-  // Define the properties of the options object here
-  // For example:
+ 
   width: number;
   height: number;
   data: string;
-  // Add other properties as needed
+ 
 }
 
 const QRCodePreview = ({ options }: { options: QRCodeOptions }) => {
@@ -32,4 +31,4 @@ const QRCodePreview = ({ options }: { options: QRCodeOptions }) => {
  
 
 export default QRCodePreview;
- 
+

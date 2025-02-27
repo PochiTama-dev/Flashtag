@@ -4,7 +4,7 @@ import QRCodePreview from "../QRCodePreview/QRCodePreview";
 import QRCodeDownload from "../QRCodeDownload/QRCodeDownload";
 import QRCodeForm from "../QRCodeForm/QRCodeForm";
 import styles from "./QRCodeStepper.module.scss";
-import Button from "../../../../components/Button/Button";
+import { Button, Typography } from "../../../../components";
 const QRCodeStepper = () => {
   const [step, setStep] = useState(1);
   const [qrCodeOptions, setQrCodeOptions] = useState({
@@ -30,8 +30,8 @@ const QRCodeStepper = () => {
     <div className={styles.stepper}>
    
       <div className={styles.qrCodeContainer}>
-        <h1>Previsualización</h1>
-        <h3>Escanea este código QR con tu dispositivo.</h3>
+        <Typography variant="title">Previsualización</Typography>
+        <Typography variant="subtitle">Escanea este código QR con tu dispositivo.</Typography>
         <div className={styles.qrCode}>
 
         <QRCodePreview options={qrCodeOptions} />
@@ -46,11 +46,11 @@ const QRCodeStepper = () => {
       </div>
       <div className={styles.stepContent}>
         {step === 1 && <QRCodeData setQrCodeOptions={setQrCodeOptions} />}
-        {step === 2 && <QRCodeForm setQrCodeOptions={setQrCodeOptions} />}
+        {step === 2 && <QRCodeForm setQrCodeOptions={setQrCodeOptions} setText={() => {}} setDotType={() => {}} />}
         {step === 3 && <QRCodeDownload qrCodeOptions={qrCodeOptions} />}
       <div className={styles.stepsButtons}>
-        <Button type="secondary"  onClick={prevStep} disabled={step === 1}>Anterior</Button>
-        <Button type="primary" onClick={nextStep} disabled={step === 3}>Siguiente</Button>
+        <Button type="white"  onClick={prevStep} disabled={step === 1}>Anterior</Button>
+        <Button type="green" onClick={nextStep} disabled={step === 3}>Siguiente</Button>
       </div>
       </div>
       </div>
