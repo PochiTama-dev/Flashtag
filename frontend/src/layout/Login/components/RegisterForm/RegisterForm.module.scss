@@ -1,0 +1,79 @@
+@use "@styles/colors" as *;
+
+.form {
+ width: 450px;
+ border-radius: 12px;
+ padding: 20px;
+ border: solid 1px $light-grey;
+ .crearCuenta {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px auto;
+ }
+ .loginTitle {
+  margin-bottom: 30px;
+ }
+ .formGroup {
+  text-align: left;
+  margin-bottom: 1rem;
+ }
+ .input {
+  width: 95%;
+  margin-top: 0.5rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+ }
+}
+.forgotPassword {
+ color: blue;
+ text-align: right;
+ cursor: pointer;
+}
+.phoneInputContainer {
+ display: flex;
+ align-items: center;
+}
+.countryCodeSelect {
+ width: 100px;
+ margin-right: 10px;
+}
+.phoneNumberInput {
+ flex: 1;
+}
+.registerButton {
+ width: 100%;
+ margin: 0 auto;
+ button {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+ }
+}
+
+.crearCuenta {
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
+ margin: 20px auto;
+}
+.role{
+    display: flex;
+    flex-direction: row     ;
+}
+.role label {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;  
+}
+
+.role input[type='radio'] {
+  margin-right: 5px;  
+}
+
+.errorMessage{
+    font-size: 14px;
+    color: red;
+}

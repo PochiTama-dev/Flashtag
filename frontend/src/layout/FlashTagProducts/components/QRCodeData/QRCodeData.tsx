@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import styles from "./QRCodeData.module.scss";
-import { AppContext } from "../../../../context/AppContext";
+import { AppContext } from "../../../../Context/AppContext";
 import { Typography } from "../../../../components";
 
 type QRCodeDataProps = {
