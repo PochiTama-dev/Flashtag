@@ -1,2 +1,2 @@
-export { default as FlashTagProducts } from './FlashTagProducts';
+export { default as QRDesign } from './QRDesign';
 export { default as Login } from './Login';
