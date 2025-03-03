@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FaHome,
   FaTag,
@@ -8,22 +9,29 @@ import {
   FaUserCircle,
   FaSignOutAlt,
 } from "react-icons/fa";
+import { useAuth } from "../../Context/LoginContext";
 import "./Sidebar.scss";
 
 const Sidebar = () => {
+  const { state, logout } = useAuth();
+  const { user } = state;
+
   return (
     <div className="sidebar">
       <div className="sidebar-logo">
-        <img src="/assets/flash-logo.png" alt="Profile" />
+        <img src="/assets/flash-logo.png" alt="Logo" />
       </div>
       <div className="sidebar-header">
         <div className="profile-picture">
-          <img src="/assets/flash-logo.png" alt="Profile" />
+          <img
+            src={user?.avatar || "/assets/default-avatar.png"}
+            alt="Profile"
+          />
         </div>
         <div className="profile-info">
-          <span>Nombre de usuario</span>
+          <span>{user?.fullname || "Nombre"}</span>
           <div>
-            <span style={{ fontSize: "12px" }}>Administrador</span>
+            {/*          <span style={{ fontSize: "12px" }}>{user?.role?.name || 'Rol'}</span> */}
           </div>
         </div>
       </div>
@@ -71,7 +79,6 @@ const Sidebar = () => {
           <li>
             <a href="#">
               <FaUserFriends />
-
               <span>Cuenta</span>
             </a>
           </li>
@@ -91,7 +98,7 @@ const Sidebar = () => {
             <p>Otros</p>
           </div>
           <li>
-            <a href="#">
+            <a href="#" onClick={logout}>
               <FaSignOutAlt />
               <span>Cerrar sesión</span>
             </a>

@@ -36,7 +36,10 @@
     background-color: $danger;
     color: $white;
   }
-
+  &.black {
+    background-color: $black;
+    color: $white;
+  }
   &:hover {
     opacity: 0.8;
   }
@@ -45,5 +48,6 @@
     background-color: $grey;
     cursor: not-allowed;
     opacity: 0.6;
+    color: black;
   }
 }

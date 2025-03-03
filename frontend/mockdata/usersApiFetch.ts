@@ -41,19 +41,26 @@ const getUserByEmail =  async (email) => {
   }
 }
 
-const loginUser = async (user) => {
+const loginUser = async (user: { email: string; password: string }) => {
   try {
-    const response = await fetch(BASE_URL, {
+    const response = await fetch(`${BASE_URL}/login`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     });
-    const loginUser = await response.json();   
+
+    if (!response.ok) {
+      throw new Error('Error, usuario no encontrado...');
+    }
+
+    const text = await response.text();
+    const loginUser = text ? JSON.parse(text) : null;
+
     return loginUser;
   } catch (error) {
-      console.error('Error, usuario no encontrado...', error);
+    console.error('Error, usuario no encontrado...', error);
   }
-}
+};
 
 const saveUser = async (user) => {
   try {
@@ -65,7 +72,8 @@ const saveUser = async (user) => {
       method: 'POST',
       body: form,
     });
-    const newUser = await response.json();
+    const text = await response.text();
+    const newUser = text ? JSON.parse(text) : {};
     if (newUser.id) {
       return newUser;
     } else {
