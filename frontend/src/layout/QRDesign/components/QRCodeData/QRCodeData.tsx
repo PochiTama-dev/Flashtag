@@ -4,18 +4,19 @@ import { AppContext } from "../../../../Context/AppContext";
 import { Typography } from "../../../../components";
 
 type QRCodeDataProps = {
-  setQrCodeOptions: React.Dispatch<React.SetStateAction<{
-    width: number;
-    height: number;
-    data: string;
-    dotsOptions: { color: string; type: string; };
-    cornersSquareOptions: { color: string; type: string; };
-    cornersDotOptions: { color: string; type: string; };
-    imageOptions: { crossOrigin: string; hideBackgroundDots: boolean; imageSize: number; margin: number; };
-    image: string;
+  setFormData: React.Dispatch<React.SetStateAction<{
+    type: string;
+    category: string;
+    password: string;
+    url: string;
+    ssid: string;
+    inscription: string;
+    campaign: string;
+    scanLimit: string;
   }>>;
 };
-const QRCodeData: React.FC<QRCodeDataProps> = ({ setQrCodeOptions }) => {
+
+const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
   const { qrTags } = useContext(AppContext);
   const [type, setType] = useState("wifi");
   const [category, setCategory] = useState("");
@@ -26,30 +27,24 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setQrCodeOptions }) => {
   const [campaign, setCampaign] = useState("");
   const [scanLimit, setScanLimit] = useState("");
   const [passwordError, setPasswordError] = useState(false);
-/*   const [urlError, setUrlError] = useState(false); */
 
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("qrdata") || '{}');
     if (savedData) {
-      setType(savedData.type);
-      setCategory(savedData.category);
-      setPassword(savedData.password);
-      setUrl(savedData.url);
-      setSsid(savedData.ssid);
-      setInscription(savedData.inscription);
-      setCampaign(savedData.campaign);
-      setScanLimit(savedData.scanLimit);
+      setType(savedData.type || "wifi");
+      setCategory(savedData.category || "");
+      setPassword(savedData.password || "");
+      setUrl(savedData.url || "");
+      setSsid(savedData.ssid || "");
+      setInscription(savedData.inscription || "");
+      setCampaign(savedData.campaign || "");
+      setScanLimit(savedData.scanLimit || "");
     }
   }, []);
 
   useEffect(() => {
-    const data = { type, category, password,/*  url, */ ssid, inscription, campaign, scanLimit };
-    localStorage.setItem("qrdata", JSON.stringify(data));
-    setQrCodeOptions((prevOptions) => ({
-      ...prevOptions,
-      data: url || ssid,
-    }));
-  }, [type, category, password, /* url,  */ssid, inscription, campaign, scanLimit, setQrCodeOptions]);
+    setFormData({ type, category, password, url, ssid, inscription, campaign, scanLimit });
+  }, [type, category, password, url, ssid, inscription, campaign, scanLimit, setFormData]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -57,12 +52,6 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setQrCodeOptions }) => {
     setPasswordError(value.length < 7);
   };
 
-/*   const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setUrl(value);
-    setUrlError(!/^https?:\/\/[^\s$.?#].[^\s]*$/.test(value));
-  };
- */
   return (
     <form className={styles.form}>
       <Typography variant="title-mid">Datos del QR</Typography>
@@ -107,7 +96,7 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setQrCodeOptions }) => {
             <label>SSID*</label>
             <input
               type="text"
-              placeholder="Eje: Homework"
+              placeholder="Ej: Homework"
               value={ssid}
               onChange={(e) => setSsid(e.target.value)}
               required
@@ -124,21 +113,6 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setQrCodeOptions }) => {
           </div>
         </div>
       )}
-
-{/*       {type !== "wifi" && (
-        <div className={styles.field}>
-          <label>Link QR*</label>
-          <input
-            type="url"
-            placeholder="https://example.com"
-            value={url}
-            onChange={handleUrlChange}
-            className={urlError ? styles.error : ""}
-            required
-          />
-          {urlError && <span className={styles.errorMessage}>Debe ser una URL válida.</span>}
-        </div>
-      )} */}
 
       <div className={styles.row}>
         <div className={styles.field}>

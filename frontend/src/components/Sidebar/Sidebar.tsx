@@ -3,6 +3,19 @@ import { FaHome, FaTag, FaQrcode, FaGift, FaEnvelope, FaUserFriends, FaUserCircl
 import { useAuth } from '../../Context/LoginContext';
 import "./Sidebar.scss";
 
+const routes = {
+  dashboard: '#',
+  productos: '#',
+  qrDesign: '/qrDesign',
+  giftcard: '#',
+  campanas: '#',
+  ruleta: '#',
+  cuenta: '#',
+  usuarios: '#',
+  clientes: '#',
+  logout: '#'
+};
+
 const Sidebar = () => {
   const { state, logout } = useAuth();
   const { user } = state;
@@ -26,37 +39,37 @@ const Sidebar = () => {
       <nav className='sidebar-nav'>
         <ul>
           <li>
-            <a href='#'>
+            <a href={routes.dashboard}>
               <FaHome />
               <span>Dashboard</span>
             </a>
           </li>
           <li>
-            <a href='#'>
+            <a href={routes.productos}>
               <FaTag />
               <span>Productos Flashtag</span>
             </a>
           </li>
           <li>
-            <a href='#'>
+            <a href={routes.qrDesign}>
               <FaQrcode />
               <span>Diseño QR</span>
             </a>
           </li>
           <li>
-            <a href='#'>
+            <a href={routes.giftcard}>
               <FaGift />
               <span>Giftcard</span>
             </a>
           </li>
           <li>
-            <a href='#'>
+            <a href={routes.campanas}>
               <FaEnvelope />
               <span>Campañas</span>
             </a>
           </li>
           <li>
-            <a href='#'>
+            <a href={routes.ruleta}>
               <FaEnvelope />
               <span>Ruleta</span>
             </a>
@@ -65,19 +78,19 @@ const Sidebar = () => {
             <p>Cuenta</p>
           </div>
           <li>
-            <a href='#'>
+            <a href={routes.cuenta}>
               <FaUserFriends />
               <span>Cuenta</span>
             </a>
           </li>
           <li>
-            <a href='#'>
+            <a href={routes.usuarios}>
               <FaUserFriends />
               <span>Usuarios</span>
             </a>
           </li>
           <li>
-            <a href='#'>
+            <a href={routes.clientes}>
               <FaUserCircle />
               <span>Clientes</span>
             </a>
@@ -86,7 +99,7 @@ const Sidebar = () => {
             <p>Otros</p>
           </div>
           <li>
-            <a href='#' onClick={logout}>
+            <a href={routes.logout} onClick={logout}>
               <FaSignOutAlt />
               <span>Cerrar sesión</span>
             </a>

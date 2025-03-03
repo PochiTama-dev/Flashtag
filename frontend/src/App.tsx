@@ -1,7 +1,7 @@
 import './App.css'
 
 import Sidebar from './components/Sidebar/Sidebar'
-import { FlashTagProductsPage, LoginPage, DashboardPage } from './pages'
+import { QRDesignPage, LoginPage, DashboardPage } from './pages'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'  
  
 function App() {
@@ -15,7 +15,7 @@ function App() {
         <div className="main-content">
           <Routes>
             <Route path="/login" element={<LoginPage />} /> 
-            <Route path="/products" element={<FlashTagProductsPage />} /> 
+            <Route path="/qrDesign" element={<QRDesignPage />} /> 
             <Route path="/dashboard" element={<DashboardPage />} />
           </Routes>
         </div>
