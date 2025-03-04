@@ -1,6 +1,15 @@
-import React from 'react';
-import { FaHome, FaTag, FaQrcode, FaGift, FaEnvelope, FaUserFriends, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
-import { useAuth } from '../../Context/LoginContext';
+import React from "react";
+import {
+  FaHome,
+  FaTag,
+  FaQrcode,
+  FaGift,
+  FaEnvelope,
+  FaUserFriends,
+  FaUserCircle,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { useAuth } from "../../Context/LoginContext";
 import "./Sidebar.scss";
 
 const routes = {
@@ -19,24 +28,27 @@ const routes = {
 const Sidebar = () => {
   const { state, logout } = useAuth();
   const { user } = state;
- 
+
   return (
-    <div className='sidebar'>
-      <div className='sidebar-logo'>
-        <img src='/assets/flash-logo.png' alt='Logo' />
+    <div className="sidebar">
+      <div className="sidebar-logo">
+        <img src="/assets/flash-logo.png" alt="Logo" />
       </div>
-      <div className='sidebar-header'>
-        <div className='profile-picture'>
-          <img src={user?.avatar || '/assets/default-avatar.png'} alt='Profile' />
+      <div className="sidebar-header">
+        <div className="profile-picture">
+          <img
+            src={user?.avatar || "/assets/default-avatar.png"}
+            alt="Profile"
+          />
         </div>
-        <div className='profile-info'>
-          <span>{user?.fullname || 'Nombre'}</span>
+        <div className="profile-info">
+          <span>{user?.fullname || "Nombre"}</span>
           <div>
-   {/*          <span style={{ fontSize: "12px" }}>{user?.role?.name || 'Rol'}</span> */}
+            {/*          <span style={{ fontSize: "12px" }}>{user?.role?.name || 'Rol'}</span> */}
           </div>
         </div>
       </div>
-      <nav className='sidebar-nav'>
+      <nav className="sidebar-nav">
         <ul>
           <li>
             <a href={routes.dashboard}>
@@ -74,7 +86,7 @@ const Sidebar = () => {
               <span>Ruleta</span>
             </a>
           </li>
-          <div className='subtitle'>
+          <div className="subtitle">
             <p>Cuenta</p>
           </div>
           <li>
@@ -95,7 +107,7 @@ const Sidebar = () => {
               <span>Clientes</span>
             </a>
           </li>
-          <div className='subtitle'>
+          <div className="subtitle">
             <p>Otros</p>
           </div>
           <li>
