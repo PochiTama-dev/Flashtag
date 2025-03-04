@@ -1,0 +1,104 @@
+.generic-table {
+ 
+  border-collapse: collapse;
+  color: black;
+
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    h2 {
+      margin: 0;
+    }
+
+    .header-buttons {
+      button {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border: 1px solid #ddd;
+
+    tr {
+      height: 50px;
+    }
+
+    th,
+    td {
+      color: black;
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+  }
+}
+
+.products-table {
+  color: black;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+
+  h2,
+  label {
+    display: flex;
+    justify-content: start;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  label {
+    margin-bottom: 20px;
+  }
+
+  .table-controls {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 20px;
+    gap: 10px;
+    height: 5vh;
+
+    h4 {
+      display: flex;
+      align-items: center;
+      margin-left: 5%;
+    }
+
+    input {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      width: 25%;
+      margin-left: 15%;
+      margin-right: 10%;
+    }
+
+    button {
+      color: white;
+      background-color: #8845fc;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
+}
