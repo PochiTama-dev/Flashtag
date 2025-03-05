@@ -27,13 +27,13 @@ export default {
 
   saveQrCode: async (req, res) => {
     try {
-      // Asegúrate de pasar la información correctamente extraída
+ 
       const qrCodeData = {
-        body: req.body,        // Datos enviados en el cuerpo de la solicitud
-        file: req.file         // El archivo subido por multer
+        body: req.body,       
+        file: req.file          
       };
   
-      // Pasa los datos al servicio
+   
       const qrCode = await qrCodeService.saveQrCode(qrCodeData);
   
       res.status(201).json(qrCode);

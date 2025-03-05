@@ -119,7 +119,7 @@ CREATE TABLE `qr_analytics` (
 --
 
 CREATE TABLE `qr_codes` (
-  `id` varchar(500) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `id_qr_type` int(11) NOT NULL,
   `id_qr_tag` int(11) NOT NULL,
   `id_product` int(11) NOT NULL,
@@ -431,7 +431,7 @@ ALTER TABLE `qr_analytics`
 -- Indices de la tabla `qr_codes`
 --
 ALTER TABLE `qr_codes`
-  ADD PRIMARY KEY (`id`),
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,
   ADD KEY `id_qr_type` (`id_qr_type`),
   ADD KEY `id_qr_tag` (`id_qr_tag`),
   ADD KEY `id_product` (`id_product`),
@@ -623,6 +623,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `users_subscriptions`
 --
 ALTER TABLE `users_subscriptions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `qr_codes`
+--
+ALTER TABLE `qr_codes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
