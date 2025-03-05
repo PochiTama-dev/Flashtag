@@ -4,7 +4,7 @@ import { getQrTags } from '../../mockdata/qrTagApiFetch';
 
 type QRTag = {
   id: string;
-  name: string;
+  label: string;
 };
 
 type AppContextType = {
@@ -32,7 +32,7 @@ const AppProvider = ({ children }: { children: ReactNode }) => {
     fetchQrTypes();
     fetchQrTags();
   }, []);
-
+ 
   return (
     <AppContext.Provider value={{ qrTypes, qrTags }}>
       {children}

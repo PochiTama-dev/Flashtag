@@ -9,6 +9,27 @@ export const defaultImages = [
   { label: "Brubank", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Brubank_logo.png/640px-Brubank_logo.png" }
 ];
 
+export const cornerSquareTypes = [
+  { value: "square", img: "assets/formasQR/1.png", label: "Square" },
+  { value: "rounded", img: "assets/formasQR/2.png", label: "Rounded" },
+  { value: "classy-rounded", img: "assets/formasQR/3.png", label: "Classy Rounded" },
+  { value: "classy", img: "assets/formasQR/4.png", label: "Classy" },
+  { value: "extra-rounded", img: "assets/formasQR/5.png", label: "Extra Rounded" },
+  { value: "dot", img: "assets/formasQR/6.png", label: "Dot" },
+];
+
+export const dotTypes = [
+  { value: "square", img: "assets/formasQR/1.png", label: "Square" },
+  { value: "rounded", img: "assets/formasQR/2.png", label: "Rounded" },
+  { value: "classy-rounded", img: "assets/formasQR/3.png", label: "Classy Rounded" },
+  { value: "classy", img: "assets/formasQR/4.png", label: "Classy" },
+  { value: "extra-rounded", img: "assets/formasQR/5.png", label: "Extra Rounded" },
+  { value: "dots", img: "assets/formasQR/6.png", label: "Dots" },
+];
+
+
+
+
 export const defaultDesigns = [
   {
     label: "Diseño 1",

@@ -5,13 +5,14 @@ import QRCodeDownload from "../QRCodeDownload/QRCodeDownload";
 import QRCodeForm from "../QRCodeForm/QRCodeForm";
 import styles from "./QRCodeStepper.module.scss";
 import { Button, Typography } from "../../../../components";
+import { saveQrCode } from '../../../../../mockdata/qrCodeApiFetch';
 
 const QRCodeStepper = () => {
   const [step, setStep] = useState(1);
   const [qrCodeOptions, setQrCodeOptions] = useState({
     width: 300,
     height: 300,
-    data: "default text", // FORMA DEFAULT DEL QR, ACA VA LA URL DEL BACK 
+    data: "http://localhost:8006/1", // FORMA DEFAULT DEL QR, ACA VA LA URL DEL BACK 
     dotsOptions: { color: "#000000", type: "square" },
     cornersSquareOptions: { color: "#000000", type: "square" },
     cornersDotOptions: { color: "#000000", type: "square" },
@@ -52,16 +53,60 @@ const QRCodeStepper = () => {
     };
   }, []);
 
+  const handleSaveQrCode = async () => {
+    const qrDataString = localStorage.getItem("qrdata");
+    if (!qrDataString) {
+      alert("No se encontraron datos de QR en el almacenamiento local.");
+      return;
+    }
+
+    const qrData = JSON.parse(qrDataString);
+
+    if (window.confirm("¿Deseas continuar y guardar el código QR?")) {
+      const qrCodeData = {
+        id:"1", 
+        url:'www.google.com',
+        code:'123456',
+        id_qr_type: 1,
+        id_qr_tag: qrData.category || null,
+        id_product: null,
+        id_analytics: null,
+        id_template: null,
+        id_social_network: null,
+        social_network_code: qrData.social_network_code || "exampleSocialNetworkCode",
+        scan_limit: qrData.scanLimit || 0,
+        image: qrData.image,
+        border: qrData.border,
+        color: qrData.color,
+        smooth: qrData.smooth,
+ 
+      };
+
+      const savedQrCode = await saveQrCode(qrCodeData);
+      if (savedQrCode) {
+        alert("Código QR guardado exitosamente.");
+      } else {
+        alert("Error al guardar el código QR. Inténtalo de nuevo.");
+      }
+    }
+  };
+
   const nextStep = () => {
     setStep((prevStep) => Math.min(prevStep + 1, 3));
     if (step === 1) {
-      localStorage.setItem("qrdata", JSON.stringify(formData));
+      localStorage.setItem("qrdata", JSON.stringify({
+        ...formData,
+        border: qrCodeOptions.cornersSquareOptions.type,
+        color: qrCodeOptions.cornersSquareOptions.color,
+        smooth: qrCodeOptions.dotsOptions.type,
+      }));
+    }
+    if (step === 2) {
+      handleSaveQrCode();
     }
   };
 
   const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
-
- 
 
   return (
     <div className={styles.stepper}>

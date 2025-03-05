@@ -3,7 +3,7 @@ import connection from "../config/connection.js";
 
 export default connection.define('Feedback', {
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false },
-  id_qr_code: { type: DataTypes.INTEGER, allowNull: false },
+  id_qr_code: { type: DataTypes.STRING(500), allowNull: false },
   fullname: { type: DataTypes.STRING(50), allowNull: false },
   email: { type: DataTypes.STRING(50), allowNull: true, defaultValue: null },
   comment: { type: DataTypes.TEXT, allowNull: false },
