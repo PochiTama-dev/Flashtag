@@ -13,16 +13,16 @@ import { useAuth } from "../../Context/LoginContext";
 import "./Sidebar.scss";
 
 const routes = {
-  dashboard: '#',
-  productos: '#',
-  qrDesign: '/qrDesign',
-  giftcard: '#',
-  campanas: '#',
-  ruleta: '#',
-  cuenta: '#',
-  usuarios: '#',
-  clientes: '#',
-  logout: '#'
+  dashboard: "#",
+  productos: "/products",
+  qrDesign: "/qrDesign",
+  giftcard: "#",
+  campanas: "#",
+  ruleta: "#",
+  cuenta: "#",
+  usuarios: "#",
+  clientes: "#",
+  logout: "#",
 };
 
 const Sidebar = () => {
