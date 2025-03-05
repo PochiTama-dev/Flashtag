@@ -77,7 +77,7 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
               {qrTags.map((tag) => (
                 <option key={tag.id} value={tag.id}>
-                  {tag.name}
+                  {tag.label}
                 </option>
               ))}
             </select>

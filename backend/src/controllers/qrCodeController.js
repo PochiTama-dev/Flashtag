@@ -24,17 +24,23 @@ export default {
       res.status(500).json({ message: 'Error en servidor al tratar de obtener el código Qr...', error });
     }
   },
+
   saveQrCode: async (req, res) => {
     try {
-   
-      const qrCode = await qrCodeService.saveQrCode(req, res);
+      // Asegúrate de pasar la información correctamente extraída
+      const qrCodeData = {
+        body: req.body,        // Datos enviados en el cuerpo de la solicitud
+        file: req.file         // El archivo subido por multer
+      };
+  
+      // Pasa los datos al servicio
+      const qrCode = await qrCodeService.saveQrCode(qrCodeData);
+  
       res.status(201).json(qrCode);
     } catch (error) {
-      res.status(500).json({ message: 'Error en servidor al tratar de guardar el código QR...', error });
+      res.status(500).json({ message: 'Error en servidor al tratar de guardar el código Qr...', error });
     }
   },
-  
-
   updateQrCode: async (req, res) => {
     const id = req.params.id;
     try {
