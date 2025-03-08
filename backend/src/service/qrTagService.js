@@ -19,7 +19,7 @@ export default {
 
   saveQrTag: async (qrTag) => {
     try {
-      return await QrTag.create({ name: qrTag.body.name });
+      return await QrTag.create({ label: qrTag.body.label });
     } catch (error) {
       console.log(error); 
     }
@@ -28,7 +28,7 @@ export default {
   updateQrTag: async (qrTag) => {
     try {
       const [updated] = await QrTag.update({
-        name: qrTag.body.name
+        label: qrTag.body.label
       }, {
         where: { id: qrTag.params.id }
       });

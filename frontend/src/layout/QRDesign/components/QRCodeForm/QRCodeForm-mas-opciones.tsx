@@ -1,62 +1,66 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
- 
-import styles from "./QRCodeForm.module.scss";
 import { Typography } from "../../../../components";
-const generateRandomText = () => {
-  return Math.random().toString(36).substring(2, 15);
-};
+import styles from "./QRCodeForm.module.scss";
+import { defaultDesigns } from "./constants.ts";
+import { cornerSquareTypes, dotTypes } from "./constants.ts";
 
 interface QRCodeFormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setQrCodeOptions: (options: any) => void;
+  setText: React.Dispatch<React.SetStateAction<string>>;
+  setDotType: React.Dispatch<React.SetStateAction<DotType>>;
+  setQrCodeOptions: (options: {
+    width: number;
+    height: number;
+    data: string;
+    dotsOptions: { color: string; type: DotType };
+    cornersSquareOptions: { color: string; type: CornerSquareType };
+    cornersDotOptions: { color: string; type: CornerDotType };
+    imageOptions: { crossOrigin: string; hideBackgroundDots: boolean; imageSize: number; margin: number };
+    image: string;
+  }) => void;
+  defaultText: string;
 }
 
-const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
-  const [text, setText] = useState(generateRandomText());
-  const [dotType, setDotType] = useState("square");
+type CornerSquareType = "square" | "rounded" | "classy-rounded" | "classy" | "extra-rounded" | "dot";
+type DotType = "square" | "rounded" | "classy-rounded" | "classy" | "extra-rounded" | "dot";
+type CornerDotType = "square" | "rounded" | "classy-rounded" | "classy" | "extra-rounded" | "dot";
+
+const QRCodeForm = ({ setQrCodeOptions, defaultText }: QRCodeFormProps) => {
+  const [text, setText] = useState(defaultText);
+  const [dotType, setDotType] = useState<DotType>("square");
   const [cornerSquareColor, setCornerSquareColor] = useState("#000000");
   const [cornerDotColor, setCornerDotColor] = useState("#000000");
-  const [cornerSquareType, setCornerSquareType] = useState("square");
-  const [cornerDotType, setCornerDotType] = useState("square");
+  const [cornerSquareType, setCornerSquareType] = useState<CornerSquareType>("square");
+  const [cornerDotType, setCornerDotType] = useState<CornerDotType>("square");
   const [image, setImage] = useState("");
   const [imageSize, setImageSize] = useState(0.4);
   const [imageMargin, setImageMargin] = useState(0);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files[0]) {
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === "string") {
-          setImage(reader.result);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  useEffect(() => {
+    fetch("http://localhost:8006/uploads")
+      .then((response) => response.json())
+      .then((files) => {
+        const imageUrls: string[] = files.map((file: string) => `http://localhost:8006/uploads/${file}`);
+        setUploadedImages(imageUrls);
+      })
+      .catch((error) => console.error("Error al obtener los logos:", error));
+  }, []);
+
+  const applyDesign = (design: (typeof defaultDesigns)[0]["options"]) => {
+    setDotType(design.dotType as DotType);
+    setCornerSquareColor(design.cornerSquareColor);
+    setCornerSquareType(design.cornerSquareType as CornerSquareType);
+    setCornerDotColor(design.cornerDotColor);
+    setCornerDotType(design.cornerDotType as CornerDotType);
+    setImage(design.image);
+    setImageSize(design.imageSize);
+    setImageMargin(design.imageMargin);
+    updateQrCodeOptions();
   };
 
-  const defaultImages = [
-    { label: "Facebook", url: "https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" },
-    { label: "X", url: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Twitter_X.png/640px-Twitter_X.png" },
-    { label: "Instagram", url: "https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" },
-  ];
-
-  const cornerSquareTypes = [
-      { value: "square", img: "assets/formasQR/1.png", label: "Square" },
-      { value: "rounded", img: "assets/formasQR/2.png", label: "Rounded" },
-      { value: "classy-rounded", img: "assets/formasQR/3.png", label: "Classy Rounded" },
-      { value: "classy", img: "assets/formasQR/4.png", label: "Classy" },
-      { value: "extra-rounded", img: "assets/formasQR/5.png", label: "Extra Rounded" },
-      { value: "dot", img: "assets/formasQR/6.png", label: "Dot" },
-  ];
-
-  const updateQrCodeOptions = () => {
-    if (typeof setQrCodeOptions === 'function') {
-      setQrCodeOptions({
+  const updateQrCodeOptions = (uploadedImage?: string) => {
+    if (typeof setQrCodeOptions === "function") {
+      const options = {
         width: 300,
         height: 300,
         data: text,
@@ -69,11 +73,19 @@ const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
           imageSize: imageSize,
           margin: imageMargin,
         },
-        image: image,
-      });
-    } else {
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-  ""
+        image: uploadedImage || image,
+      };
+      setQrCodeOptions(options);
+      localStorage.setItem(
+        "qrdata",
+        JSON.stringify({
+          ...JSON.parse(localStorage.getItem("qrdata") || "{}"),
+          border: options.cornersSquareOptions.type,
+          color: options.cornersSquareOptions.color,
+          smooth: options.dotsOptions.type,
+          image: options.image,
+        })
+      );
     }
   };
 
@@ -82,36 +94,73 @@ const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, dotType, cornerSquareColor, cornerDotColor, cornerSquareType, cornerDotType, image, imageSize, imageMargin]);
 
+  useEffect(() => {
+    setText(defaultText); // Set defaultText to text state
+  }, [defaultText]);
+ 
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    const file = event.target.files?.[0];
+    if (file) {
+  
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImage(reader.result as string);
+          updateQrCodeOptions();
+        };
+        reader.readAsDataURL(file);
+    
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const imageUrl = `http://localhost:8006/uploads/${file.name}`;
+      setImage(imageUrl);
+      localStorage.setItem(
+        "qrdata",
+        JSON.stringify({
+          ...JSON.parse(localStorage.getItem("qrdata") || "{}"),
+          image: imageUrl,
+        })
+      );
+
+      fetch("http://localhost:8006/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          const uploadedImageUrl = `http://localhost:8006/uploads/${data.filename}`;
+          setImage(uploadedImageUrl);
+          updateQrCodeOptions(uploadedImageUrl);
+        })
+        .catch((error) => console.error("Error al subir la imagen:", error));
+    }
+  }
+
   return (
     <div className={styles.formContainer}>
+      <div className={styles.titleContainer}>
+        <Typography variant='title-mid'>Personalizar QR</Typography>
+        <Typography variant='subtitle'>Selecciona lo que más te guste.</Typography>
+      </div>
+      <select onChange={(e) => applyDesign(defaultDesigns[parseInt(e.target.value)].options)}>
+        <option value=''>Selecciona un diseño predeterminado</option>
+        {defaultDesigns.map((design, index) => (
+          <option key={index} value={index}>
+            {design.label}
+          </option>
+        ))}
+      </select>
       <input
-        type="text"
+        type='text'
         value={text}
         onChange={(e) => {
           setText(e.target.value);
           updateQrCodeOptions();
         }}
-        placeholder="Ingresa el texto para el QR"
+        placeholder='Ingresa el texto para el QR'
       />
-{/*       <div>
-        <label>
-          Tipo de puntos:
-          <select value={dotType} onChange={(e) => {
-            setDotType(e.target.value);
-            updateQrCodeOptions();
-          }}>
-            <option value="square">Cuadrado</option>
-            <option value="rounded">Redondeado</option>
-            <option value="dots">Puntos</option>
-            <option value="classy">Elegante</option>
-            <option value="classy-rounded">Elegante redondeado</option>
-            <option value="extra-rounded">Extra redondeado</option>
-          </select>
-        </label>
-      </div> */}
-    
       <div>
-        <Typography variant="normal-bold">Tipo de esquinas</Typography>
+        <label>Tipo de esquinas</label>
         <div className={styles.cornerSquareTypes}>
           {cornerSquareTypes.map((type) => (
             <img
@@ -120,26 +169,28 @@ const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
               alt={type.label}
               className={cornerSquareType === type.value ? styles.selected : ""}
               onClick={() => {
-                setCornerSquareType(type.value);
+                setCornerSquareType(type.value as CornerSquareType);
                 updateQrCodeOptions();
               }}
             />
           ))}
         </div>
       </div>
-       <div>
-        <Typography variant="normal-bold">Color de esquinas</Typography>
-        <input
-          type="text"
-          value={cornerSquareColor}
-          onChange={(e) => {
-            setCornerSquareColor(e.target.value);
-            updateQrCodeOptions();
-          }}
-          placeholder="#000000"
-        />
+      <div className={styles.colorPickerContainer}>
+        <label>
+          Color de esquinas
+          <input
+            type='text'
+            value={cornerSquareColor}
+            onChange={(e) => {
+              setCornerSquareColor(e.target.value);
+              updateQrCodeOptions();
+            }}
+            placeholder='#000000'
+          />
+        </label>
         <div className={styles.colorPicker}>
-          {["#000000",   "#595959", "#1776F2", "#C32629", "#CD17F2", "#7526C3", "#3CC326"].map((color) => (
+          {["#000000", "#595959", "#1776F2", "#C32629", "#CD17F2", "#7526C3", "#3CC326"].map((color) => (
             <div
               key={color}
               className={styles.colorCircle}
@@ -152,87 +203,51 @@ const QRCodeForm = ({ setQrCodeOptions }: QRCodeFormProps) => {
           ))}
         </div>
       </div>
-{/*       <div>
-        <label>
-          Color de las esquinas con puntos:
-          <input
-            type="color"
-            value={cornerDotColor}
-            onChange={(e) => {
-              setCornerDotColor(e.target.value);
-              updateQrCodeOptions();
-            }}
-          />
-        </label>
-      </div>
       <div>
-        <label>Tipo de esquinas con puntos:</label>
+        <label>Suavizado</label>
         <div className={styles.cornerSquareTypes}>
-          {cornerSquareTypes.map((type) => (
+          {dotTypes.map((type) => (
             <img
               key={type.value}
               src={type.img}
               alt={type.label}
-              className={cornerDotType === type.value ? styles.selected : ""}
+              className={dotType === type.value ? styles.selected : ""}
               onClick={() => {
-                setCornerDotType(type.value);
+                setDotType(type.value as DotType);
                 updateQrCodeOptions();
               }}
             />
           ))}
         </div>
-      </div> */}
-      <div>
-        <Typography variant="normal-bold">Seleccionar un logo de red social:</Typography>
-        <select onChange={(e) => {
-          setImage(e.target.value);
-          updateQrCodeOptions();
-        }} value={image}>
-          <option value="">Selecciona un logo</option>
-          {defaultImages.map((img, index) => (
-            <option key={index} value={img.url}>
-              {img.label}
-            </option>
-          ))}
-        </select>
       </div>
       <div>
-        <Typography variant="normal-bold">Cargar una imagen desde tu PC:</Typography>
-        <input type="file" onChange={handleImageChange} />
-      </div>
-     {/*  <div>
         <label>
-          Tamaño de la imagen:
-          <input
-            type="number"
-            value={imageSize}
-            min="0.1"
-            max="0.5"
-            step="0.1"
+          Seleccionar un logo de red social:
+          <select
             onChange={(e) => {
-              setImageSize(e.target.value);
+              const selectedImage = e.target.value;
+              setImage(selectedImage);
               updateQrCodeOptions();
             }}
-          />
+            value={image}
+          >
+            {uploadedImages.map((img, index) => (
+              <option key={index} value={img}>
+                <img src={img} alt={`Logo ${index}`} style={{ width: 50, height: 50, marginRight: 8 }} />
+                {img.split("/").pop()?.replace(/\.(png|webp)$/, "")}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
       <div>
         <label>
-          Margen de la imagen:
-          <input
-            type="number"
-            value={imageMargin}
-            min="0"
-            onChange={(e) => {
-              setImageMargin(e.target.value);
-              updateQrCodeOptions();
-            }}
-          />
+          Cargar una imagen desde tu PC:
+          <input type='file' onChange={handleImageChange} />
         </label>
-      </div> */}
+      </div>
     </div>
   );
 };
- 
 
 export default QRCodeForm;
