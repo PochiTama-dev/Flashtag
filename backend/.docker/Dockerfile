@@ -10,6 +10,9 @@ COPY package*.json ./
 # Instala las dependencias (en una capa separada para optimización de caché)
 RUN npm install --production
 
+# Instala el cliente MySQL
+RUN apk add --no-cache mysql-client
+
 # Copia el resto del código fuente
 COPY . .
 
