@@ -10,41 +10,56 @@ type QRCodeDataProps = {
     password: string;
     url: string;
     ssid: string;
-    inscription: string;
+    encryption: string;
     campaign: string;
     scanLimit: string;
+    cantidad: string;
   }>>;
 };
 
+const encryptionTypes = ["WEP", "WPA", "WPA2", "nopass"];
+
 const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
-  const { qrTags } = useContext(AppContext);
-  const [type, setType] = useState("wifi");
+  const { qrTypes, qrTags } = useContext(AppContext);
+  const [type, setType] = useState("");
   const [category, setCategory] = useState("");
   const [password, setPassword] = useState("");
   const [url, setUrl] = useState("");
   const [ssid, setSsid] = useState("");
-  const [inscription, setInscription] = useState("");
+  const [encryption, setEncryption] = useState("");
   const [campaign, setCampaign] = useState("");
   const [scanLimit, setScanLimit] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [quantity, setQuantity] = useState("");
 
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("qrdata") || '{}');
     if (savedData) {
-      setType(savedData.type || "wifi");
+      setType(savedData.type || "");
       setCategory(savedData.category || "");
       setPassword(savedData.password || "");
       setUrl(savedData.url || "");
       setSsid(savedData.ssid || "");
-      setInscription(savedData.inscription || "");
+      setEncryption(savedData.encryption || "");
       setCampaign(savedData.campaign || "");
       setScanLimit(savedData.scanLimit || "");
+      setQuantity(savedData.cantidad || "");
     }
   }, []);
 
   useEffect(() => {
-    setFormData({ type, category, password, url, ssid, inscription, campaign, scanLimit });
-  }, [type, category, password, url, ssid, inscription, campaign, scanLimit, setFormData]);
+    setFormData({ 
+      type, 
+      category, 
+      password, 
+      url, 
+      ssid, 
+      encryption, 
+      campaign, 
+      scanLimit,
+      cantidad: quantity 
+    });
+  }, [type, category, password, url, ssid, encryption, campaign, scanLimit, quantity, setFormData]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -59,22 +74,32 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
       
       <div className={styles.row}>
         <div className={styles.field}>
-          <label>Tipo*</label>
+                <label>Tipo*</label>
           <select value={type} onChange={(e) => setType(e.target.value)}>
-            <option value="wifi">📶 Wifi</option>
-            <option value="link">🔗 Link</option>
-            <option value="nfc">📡 NFC</option>
+            <option value="" disabled>Selecciona un tipo</option>
+            {qrTypes.filter(qrType => qrType.id != "4").map((qrType) => (
+              <option key={qrType.id} value={qrType.id}>
+                {qrType.name}
+              </option>
+            ))}
           </select>
         </div>
-        {type !== "wifi" ? (
+        {type !== "3" ? (
           <div className={styles.field}>
             <label>Cantidad*</label>
-            <input type="number" placeholder="Cantidad" required />
+            <input
+              type="number"
+              placeholder="Cantidad"
+              required
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
           </div>
         ) : (
           <div className={styles.field}>
             <label>Categoría*</label>
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="" disabled>Selecciona una categoría</option>
               {qrTags.map((tag) => (
                 <option key={tag.id} value={tag.id}>
                   {tag.label}
@@ -90,7 +115,7 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
         <input type="text" placeholder="Colocar un nombre" required />
       </div>
 
-      {type === "wifi" && (
+      {type === "3" && (
         <div className={styles.row}>
           <div className={styles.field}>
             <label>SSID*</label>
@@ -103,13 +128,13 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
             />
           </div>
           <div className={styles.field}>
-            <label>Inscripción*</label>
-            <input
-              type="text"
-              value={inscription}
-              onChange={(e) => setInscription(e.target.value)}
-              required
-            />
+            <label>Encryption*</label>
+            <select value={encryption} onChange={(e) => setEncryption(e.target.value)} required>
+              <option value="" disabled>Selecciona tipo de seguridad</option>
+              {encryptionTypes.map((enc) => (
+                <option key={enc} value={enc}>{enc}</option>
+              ))}
+            </select>
           </div>
         </div>
       )}

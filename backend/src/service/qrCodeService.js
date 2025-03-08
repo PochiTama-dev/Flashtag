@@ -19,7 +19,7 @@ saveQrCode: async (qrCode) => {
   try {
    
     return await QrCode.create({
- 
+     id: qrCode.body.id,
       id_qr_type: qrCode.body.id_qr_type, 
       id_qr_tag: qrCode.body.id_qr_tag,
       id_product: /* qrCode.body.id_product, */ null,
