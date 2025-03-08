@@ -1,5 +1,4 @@
 .generic-table {
- 
   border-collapse: collapse;
   color: black;
 
@@ -48,6 +47,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  margin-top: 5%;
 
   h2,
   label {
@@ -55,6 +55,15 @@
     justify-content: start;
     margin: 0;
     margin-bottom: 10px;
+  }
+
+  h2 {
+    align-items: center;
+    font-size: xx-large;
+
+    svg {
+      margin-right: 10px;
+    }
   }
 
   label {
@@ -74,13 +83,25 @@
       margin-left: 5%;
     }
 
-    input {
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+    .search-container {
+      position: relative;
       width: 25%;
       margin-left: 15%;
       margin-right: 10%;
+
+      input {
+        width: 100%;
+        padding: 8px 8px 8px 30px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      .search-icon {
+        position: relative;
+        bottom: 60%;
+        left: 58%;
+        transform: translateY(-50%);
+      }
     }
 
     button {
@@ -93,12 +114,87 @@
       transition: background-color 0.3s ease;
 
       &:hover {
-        background-color: #0056b3;
+        background-color: #7d00b3;
       }
 
       &:not(:last-child) {
         margin-right: 10px;
       }
+    }
+  }
+
+  table {
+    width: 100%;
+    border: 1px solid #ddd;
+
+    th,
+    td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: 600;
+      font-size: large;
+    }
+
+    .tipo {
+      color: #4caf50;
+    }
+
+    .link {
+      color: #2196f3;
+      text-decoration: underline;
+    }
+
+    .estado-activo {
+      color: #00870c;
+      background-color: #acee98;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .estado-inactivo {
+      color: #bd0d00;
+      background-color: #f9a8a8;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .tipo-wifi {
+      color: #4caf50;
+    }
+
+    .tipo-link {
+      color: #2196f3;
+    }
+
+    .tipo-nfc {
+      color: #ff9800;
+    }
+
+    .link-wifi {
+      color: #4caf50;
+    }
+
+    .link-link {
+      color: #2196f3;
+    }
+
+    .link-nfc {
+      color: #ff9800;
+    }
+
+    .estado-activo {
+      color: #4caf50;
+    }
+
+    .estado-inactivo {
+      color: #f44336;
     }
   }
 }
