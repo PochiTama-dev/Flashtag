@@ -3,7 +3,7 @@ import connection from "../config/connection.js";
 
 export default connection.define('Coupon', {
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true, allowNull: false },
-  id_qr_code: { type: DataTypes.INTEGER, allowNull: false },
+  id_qr_code: { type: DataTypes.STRING(500), allowNull: false },
   code: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
   discount: { type: DataTypes.DECIMAL(5,2), allowNull: false },
   valid_from: { type: DataTypes.DATE, allowNull: false },

@@ -1,5 +1,4 @@
- 
-import { FlashTagProducts } from "../../layout";
+import FlashTagProducts from "../../layout/FlashTagProducts";
 const FlashTagProductsPage = () => {
     return (
         <div>

@@ -27,13 +27,20 @@ export default {
 
   saveQrCode: async (req, res) => {
     try {
-      const qrCode = await qrCodeService.saveQrCode(req);
+ 
+      const qrCodeData = {
+        body: req.body,       
+        file: req.file          
+      };
+  
+   
+      const qrCode = await qrCodeService.saveQrCode(qrCodeData);
+  
       res.status(201).json(qrCode);
     } catch (error) {
       res.status(500).json({ message: 'Error en servidor al tratar de guardar el código Qr...', error });
     }
   },
-
   updateQrCode: async (req, res) => {
     const id = req.params.id;
     try {

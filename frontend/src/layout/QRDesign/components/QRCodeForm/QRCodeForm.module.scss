@@ -1,0 +1,82 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  color: #333;
+  label {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  .titleContainer{
+   text-align: left;
+    margin-bottom: 10px;
+  }
+}
+
+.cornerSquareTypes {
+  display: flex;
+  gap: 10px;
+}
+.cornerSquareTypes img {
+  margin: 10px;
+  box-sizing: border-box;
+}
+.selected {
+ 
+  border: 2px solid #1776F2;
+ 
+}
+
+.colorPickerContainer{
+  display: flex ;
+  flex-direction: row;
+  align-items: center;
+  text-align: left;
+ 
+}
+ 
+
+.colorPicker {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.colorCircle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+ .smoothingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 8px;
+}
+
+.designsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.designImage {
+  width: 70px;
+  height: 70px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.designImage:hover {
+  border-color: #1776F2;
+}
+
+.designImage.selected {
+  border-color: #1776F2;
+}
+
+
