@@ -36,7 +36,7 @@ app.use(cors());
 app.use(express.static('src'));
 
 testConnection();
-app.listen(8006, '82.29.56.112', console.log('Server runing successfully...'));
+app.listen(8006, '0.0.0.0', console.log('Server runing successfully...'));
 
 app.use('/coupons', couponRoutes);
 app.use('/feedbacks', feedbackRoutes);
