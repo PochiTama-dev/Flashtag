@@ -1,0 +1,1 @@
+export {default as FlashTagProductsPage} from "./FlashTagProductsPage";

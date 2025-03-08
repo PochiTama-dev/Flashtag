@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  backend:
+    restart: unless-stopped
+    build:
+      context: ../backend
+      dockerfile: .docker/Dockerfile
+    container_name: backend-container
+    environment:
+      - DATABASE_URL
+      - SECRET_KEY
+      - DEBUG
+      - DB_HOST=db-container
+      - DB_NAME=flashtag_db
+      - DB_USER=root
+      - DB_PASSWORD=
+    ports:
+      - "8006:8006"
+    env_file:
+      - ../frontend/.env
+      - ../backend/.env
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    restart: unless-stopped
+    image: mysql:8.0
+    container_name: db-container
+    environment:
+      MYSQL_DATABASE: flashtag_db
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ../backend/db/scripts:/docker-entrypoint-initdb.d
+
+  frontend:
+    restart: unless-stopped
+    build:
+      context: ../frontend
+      dockerfile: .docker/Dockerfile
+    container_name: frontend-container
+    environment:
+      - REACT_APP_API_URL
+      - REACT_APP_ENV
+    ports:
+      - "5173:5173"
+    env_file:
+      - ../frontend/.env
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy-container
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /home/debian/Flashtag/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../frontend:/var/www/frontend
+      - ../backend:/var/www/backend
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
