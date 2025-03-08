@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import connection from "../config/connection.js";
 
 export default connection.define('QrCode', {
-  id: { type: DataTypes.STRING(500), primaryKey: true, allowNull: false ,  autoIncrement: true},
+  id: { type: DataTypes.STRING(500), primaryKey: true, allowNull: false },
   id_qr_type: { type: DataTypes.INTEGER, allowNull: true },
   id_qr_tag: { type: DataTypes.INTEGER, allowNull: false },
   id_product: { type: DataTypes.INTEGER, allowNull: true },

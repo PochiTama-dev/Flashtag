@@ -34,6 +34,8 @@ const QRCodeForm = ({ setQrCodeOptions, defaultText }: QRCodeFormProps) => {
   const [image, setImage] = useState("");
   const [imageSize, setImageSize] = useState(0.4);
   const [imageMargin, setImageMargin] = useState(0);
+  const [selectedDesignIndex, setSelectedDesignIndex] = useState<number | null>(null);
+
 /* 
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   useEffect(() => {
@@ -46,7 +48,7 @@ const QRCodeForm = ({ setQrCodeOptions, defaultText }: QRCodeFormProps) => {
       .catch((error) => console.error("Error al obtener los logos:", error));
   }, []);
  */
-  const applyDesign = (design: (typeof defaultDesigns)[0]["options"]) => {
+  const applyDesign = (design: (typeof defaultDesigns)[0]["options"], index: number) => {
     setDotType(design.dotType as DotType);
     setCornerSquareColor(design.cornerSquareColor);
     setCornerSquareType(design.cornerSquareType as CornerSquareType);
@@ -55,6 +57,7 @@ const QRCodeForm = ({ setQrCodeOptions, defaultText }: QRCodeFormProps) => {
     setImage(design.image);
     setImageSize(design.imageSize);
     setImageMargin(design.imageMargin);
+    setSelectedDesignIndex(index);
     updateQrCodeOptions();
   };
 
@@ -142,14 +145,17 @@ const QRCodeForm = ({ setQrCodeOptions, defaultText }: QRCodeFormProps) => {
         <Typography variant='title-mid'>Personalizar QR</Typography>
         <Typography variant='subtitle'>Selecciona lo que más te guste.</Typography>
       </div>
-      <select onChange={(e) => applyDesign(defaultDesigns[parseInt(e.target.value)].options)}>
-        <option value=''>Selecciona un diseño predeterminado</option>
+       <div className={styles.designsContainer}>
         {defaultDesigns.map((design, index) => (
-          <option key={index} value={index}>
-            {design.label}
-          </option>
+          <img
+            key={index}
+            src="/assets/qr-code.png"
+            alt={design.label}
+            className={`${styles.designImage} ${selectedDesignIndex === index ? styles.selected : ""}`}
+            onClick={() => applyDesign(design.options, index)}
+          />
         ))}
-      </select>
+      </div>
       <input
         type='text'
         value={text}
@@ -205,20 +211,28 @@ const QRCodeForm = ({ setQrCodeOptions, defaultText }: QRCodeFormProps) => {
       </div>
       <div>
         <label>Suavizado</label>
-        <div className={styles.cornerSquareTypes}>
-          {dotTypes.map((type) => (
-            <img
-              key={type.value}
-              src={type.img}
-              alt={type.label}
-              className={dotType === type.value ? styles.selected : ""}
-              onClick={() => {
-                setDotType(type.value as DotType);
-                updateQrCodeOptions();
-              }}
-            />
-          ))}
+             <div className={styles.smoothingContainer}>
+ 
+          <input
+            type="range"
+            min="0"
+            max={dotTypes.length - 1}
+            value={dotTypes.findIndex((type) => type.value === dotType)}
+            onChange={(e) => {
+              const selectedType = dotTypes[parseInt(e.target.value)];
+              setDotType(selectedType.value as DotType);
+              updateQrCodeOptions();
+            }}
+            className={styles.smoothingRange}
+          />
         </div>
+    {/*     <div className={styles.dotTypeLabels}>
+          {dotTypes.map((type, index) => (
+            <span key={type.value} className={index === dotTypes.findIndex((t) => t.value === dotType) ? styles.selected : ""}>
+              {type.label}
+            </span>
+          ))}
+        </div> */}
       </div>
 {/*       <div>
         <label>
