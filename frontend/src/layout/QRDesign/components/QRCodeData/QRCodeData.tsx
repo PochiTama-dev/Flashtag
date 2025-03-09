@@ -14,6 +14,7 @@ type QRCodeDataProps = {
     campaign: string;
     scanLimit: string;
     cantidad: string;
+    data: string;
   }>>;
 };
 
@@ -31,6 +32,7 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
   const [scanLimit, setScanLimit] = useState("");
   const [passwordError, setPasswordError] = useState(false);
   const [quantity, setQuantity] = useState("");
+  const [data, setData] = useState("");
 
   useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("qrdata") || '{}');
@@ -44,11 +46,17 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
       setCampaign(savedData.campaign || "");
       setScanLimit(savedData.scanLimit || "");
       setQuantity(savedData.cantidad || "");
+      setData(savedData.data || "");  
     }
   }, []);
 
   useEffect(() => {
-    setFormData({ 
+    let constructedData = data;
+    if (type === "3") {
+      constructedData = `WIFI:S:${ssid};T:${encryption};P:${password};;`;
+    }
+
+    const formData = { 
       type, 
       category, 
       password, 
@@ -57,9 +65,12 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
       encryption, 
       campaign, 
       scanLimit,
-      cantidad: quantity 
-    });
-  }, [type, category, password, url, ssid, encryption, campaign, scanLimit, quantity, setFormData]);
+      cantidad: quantity,
+      data: constructedData
+    };
+    setFormData(formData);
+    localStorage.setItem("qrdata", JSON.stringify(formData));
+  }, [type, category, password, url, ssid, encryption, campaign, scanLimit, quantity, data, setFormData]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -74,7 +85,7 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
       
       <div className={styles.row}>
         <div className={styles.field}>
-                <label>Tipo*</label>
+          <label>Tipo*</label>
           <select value={type} onChange={(e) => setType(e.target.value)}>
             <option value="" disabled>Selecciona un tipo</option>
             {qrTypes.filter(qrType => qrType.id != "4").map((qrType) => (
@@ -162,6 +173,8 @@ const QRCodeData: React.FC<QRCodeDataProps> = ({ setFormData }) => {
           {passwordError && <span className={styles.errorMessage}>Debe contener al menos 7 caracteres.</span>}
         </div>
       </div>
+
+   
     </form>
   );
 };

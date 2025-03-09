@@ -27,7 +27,6 @@ const QRCodeStepper = () => {
       margin: 0,
     },
     image: "",
- 
   });
 
   const [formData, setFormData] = useState({
@@ -40,6 +39,7 @@ const QRCodeStepper = () => {
     campaign: "",
     scanLimit: "",
     cantidad: "",
+    data: "",
   });
 
   
@@ -48,6 +48,12 @@ const QRCodeStepper = () => {
     const savedData = JSON.parse(localStorage.getItem("qrdata") || '{}');
     if (savedData) {
       setFormData(savedData);
+      if (savedData.type === "3") {
+        setQrCodeOptions(prevState => ({
+          ...prevState,
+          data: `WIFI:S:${savedData.ssid};T:${savedData.encryption};P:${savedData.password};;`,
+        }));
+      }
     }
     const handleBeforeUnload = () => {
       localStorage.removeItem("qrdata");
@@ -97,7 +103,7 @@ const handleSaveQrCode = async () => {
           code: randomCode,
           data: qrData.type == 3 
             ? `WIFI:S:${qrData.ssid};T:${qrData.encryption};P:${qrData.password};;`
-            : `http://82.29.56.112:8006/redirect_resources/${newId}`,
+            : `http://192.168.1.60:8006/redirect_resources/${newId}`,
           id_qr_type: qrData.type,
           id_qr_tag: qrData.category && qrData.category.trim() !== "" ? qrData.category : 4,
           id_product: null,
@@ -140,7 +146,7 @@ const handleSaveQrCode = async () => {
       ...prevState,
       data: qrData.type == 3 
         ? `WIFI:S:${qrData.ssid};T:${qrData.encryption};P:${qrData.password};;`
-        : `http://82.29.56.112:8006/redirect_resources/${lastId + 1}`,
+        : `http://192.168.1.60:8006/redirect_resources/${lastId + 1}`,
     }));
   }
 };
@@ -191,19 +197,33 @@ const prevStep = () => setStep((prevStep) => Math.max(prevStep - 1, 1));
 return (
   <div className={styles.stepper}>
 <div className={styles.qrCodeContainer}>
+  <div style={{ marginBottom: "1rem" }}>
+
   <Typography variant="title">Previsualización</Typography>
-  <Typography variant="subtitle">Escanea este código QR con tu dispositivo.</Typography>
+  </div>
+{/*   <Typography variant="subtitle">Escanea este código QR con tu dispositivo.</Typography> */}
+ 
   <div className={styles.qrCode}>
-    <QRCodePreview options={qrCodeOptions} />
-<div className={styles.inputContainer}>
-  <Typography variant="subtitle">Ingresa tu código:</Typography>
-  <input
-    type="text"
-    value={inputCode}
-    onChange={handleInputCodeChange}
-    className={styles.input}
-  />
-</div>
+    {formData.type !== "3" ? (
+      <QRCodePreview options={qrCodeOptions} />
+    ) : (
+      <QRCodePreview options={{ ...qrCodeOptions, data: formData.data }} />
+    )}
+    <div className={styles.inputContainer}>
+ 
+      <Typography variant="subtitle">Ingresa tu código:</Typography>
+      <input
+        type="text"
+        value={inputCode}
+        onChange={handleInputCodeChange}
+        className={styles.input}
+      />
+    </div>
+    {formData.type === "3" && (
+    <Typography variant="subtitle">
+      Seleccionaste WIFI, escanea el codigo para verificar que los datos fueron ingresados correctamente.
+    </Typography>
+  )}
   </div>
 </div>
     <div>

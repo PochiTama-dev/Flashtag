@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
-import QRCodeData from "../QRCodeData/QRCodeData";
+/* import QRCodeData from "../QRCodeData/QRCodeData"; */
 import QRCodePreview from "../QRCodePreview/QRCodePreview";
 import QRCodeDownload from "../QRCodeDownload/QRCodeDownload";
 import QRCodeForm from "../QRCodeForm/QRCodeForm";
@@ -219,7 +219,7 @@ return (
         <div className={`${styles.step} ${step === 3 ? styles.active : ""}`}>Listo</div>
       </div>
       <div className={styles.stepContent}>
-        {step === 1 && <QRCodeData setFormData={setFormData} />}
+ {/*        {step === 1 && <QRCodeData setFormData={setFormData} />} */}
         {step === 2 && (
           <QRCodeForm
             setQrCodeOptions={setQrCodeOptions}
