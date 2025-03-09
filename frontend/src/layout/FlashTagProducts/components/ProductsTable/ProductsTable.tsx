@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./ProductsTable.scss";
 import GenericTable from "../../../../components/GenericTable/GenericTable";
 
 const ProductsTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   const columnTitles = [
     "ID",
@@ -44,7 +46,6 @@ const ProductsTable: React.FC = () => {
     <div className="products-table">
       <h2>
         <svg
-          style={{ marginRight: "10px" }}
           width="34"
           height="34"
           viewBox="0 0 34 34"
@@ -62,12 +63,30 @@ const ProductsTable: React.FC = () => {
       <label>Administra y gestiona tus precomprados.</label>
       <div className="table-controls">
         <h4>QR creados</h4>
-        <input
-          type="text"
-          placeholder="Buscar..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <div className="search-container">
+          <input
+            type="text"
+            placeholder="Buscar..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="search-icon"
+          >
+            <path
+              d="M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z"
+              stroke="#AEAEAE"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
         <button
           style={{
             backgroundColor: "white",
@@ -77,7 +96,23 @@ const ProductsTable: React.FC = () => {
         >
           Filtros
         </button>
-        <button style={{ backgroundColor: "black" }}>Asignar</button>
+        <button
+          style={{
+            backgroundColor: "black",
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+          }}
+        >
+          {" "}
+          <span
+            onClick={() => navigate("/qrDesign")}
+            style={{ fontSize: "26px" }}
+          >
+            +
+          </span>{" "}
+          Asignar
+        </button>
         <button>Exportar</button>
         <button
           style={{
@@ -106,7 +141,16 @@ const ProductsTable: React.FC = () => {
       </div>
       <GenericTable
         columnTitles={columnTitles}
-        data={filteredData}
+        data={filteredData.map((item) => ({
+          ...item,
+          Tipo: <span className="tipo">{item.Tipo}</span>,
+          Link: <span className="link">{item.Link}</span>,
+          Estado: (
+            <span className={`estado-${item.Estado.toLowerCase()}`}>
+              {item.Estado}
+            </span>
+          ),
+        }))}
         headerTitle="QR Creados"
       />
     </div>
