@@ -9,7 +9,7 @@ const FlashTagProducts = () => {
   return (
     <div
       style={{
-        width: "70%",
+        width: "75%",
         margin: "0 auto",
         marginLeft: "20%",
         height: "88vh",

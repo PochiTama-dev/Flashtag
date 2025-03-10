@@ -70,6 +70,33 @@
     margin-bottom: 20px;
   }
 
+  button {
+    color: white;
+    background-color: #8845fc;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .products-buttons-top {
+    display: flex;
+    align-items: center;
+    font-size: large;
+    gap: 10px;
+  }
+
+  .icon-export {
+    color: white;
+    background-color: #6427cd;
+    padding: 3px;
+    border-radius: 50%;
+  }
+
   .table-controls {
     display: flex;
     justify-content: start;
@@ -77,7 +104,7 @@
     gap: 10px;
     height: 5vh;
 
-    h4 {
+    h3 {
       display: flex;
       align-items: center;
       margin-left: 5%;
@@ -91,35 +118,30 @@
 
       input {
         width: 100%;
-        padding: 8px 8px 8px 30px;
+        padding: 10px;
         border: 1px solid #ddd;
         border-radius: 4px;
+        margin: 5px;
       }
 
       .search-icon {
         position: relative;
-        bottom: 60%;
-        left: 58%;
+        bottom: 55%;
+        left: 50%;
         transform: translateY(-50%);
       }
     }
 
-    button {
-      color: white;
-      background-color: #8845fc;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    .products-table-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: large;
+    }
 
-      &:hover {
-        background-color: #7d00b3;
-      }
-
-      &:not(:last-child) {
-        margin-right: 10px;
-      }
+    .icon-filter {
+      color: gray;
+      font-size: x-large;
     }
   }
 
@@ -142,6 +164,10 @@
 
     .tipo {
       color: #4caf50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: larger;
     }
 
     .link {
@@ -163,38 +189,6 @@
       padding: 5px 10px;
       border-radius: 20px;
       font-weight: 500;
-    }
-
-    .tipo-wifi {
-      color: #4caf50;
-    }
-
-    .tipo-link {
-      color: #2196f3;
-    }
-
-    .tipo-nfc {
-      color: #ff9800;
-    }
-
-    .link-wifi {
-      color: #4caf50;
-    }
-
-    .link-link {
-      color: #2196f3;
-    }
-
-    .link-nfc {
-      color: #ff9800;
-    }
-
-    .estado-activo {
-      color: #4caf50;
-    }
-
-    .estado-inactivo {
-      color: #f44336;
     }
   }
 }

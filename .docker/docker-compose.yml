@@ -11,6 +11,10 @@ services:
       - DATABASE_URL
       - SECRET_KEY
       - DEBUG
+      - DB_HOST=db-container
+      - DB_NAME=flashtag_db
+      - DB_USER=root
+      - DB_PASSWORD=
     ports:
       - "8006:8006"
     env_file:
@@ -27,14 +31,14 @@ services:
     container_name: db-container
     environment:
       MYSQL_DATABASE: flashtag_db
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Permitir contraseña vacía
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - "3306:3306"
     networks:
       - app-network
     volumes:
       - mysql-data:/var/lib/mysql
-      - ../backend/db/scripts:/docker-entrypoint-initdb.d  # Montar el directorio de scripts
+      - ../backend/db/scripts:/docker-entrypoint-initdb.d
 
   frontend:
     restart: unless-stopped
@@ -46,7 +50,7 @@ services:
       - REACT_APP_API_URL
       - REACT_APP_ENV
     ports:
-      - "3000:3000"
+      - "5173:5173"
     env_file:
       - ../frontend/.env
     depends_on:
@@ -54,17 +58,19 @@ services:
     networks:
       - app-network
 
-  monitor:
+  caddy:
+    image: caddy:latest
+    container_name: caddy-container
     restart: unless-stopped
-    image: alpine
-    container_name: monitor-container
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
-      - ../scripts:/scripts
-    entrypoint: /scripts/restart_containers.sh
-    depends_on:
-      - backend
-      - db
-      - frontend
+      - /home/debian/Flashtag/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ../frontend:/var/www/frontend
+      - ../backend:/var/www/backend
+      - caddy_data:/data
+      - caddy_config:/config
     networks:
       - app-network
 
@@ -74,4 +80,8 @@ networks:
 
 volumes:
   mysql-data:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
     driver: local

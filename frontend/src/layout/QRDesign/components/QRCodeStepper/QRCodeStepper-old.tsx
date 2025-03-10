@@ -16,7 +16,7 @@ const QRCodeStepper = () => {
   const [qrCodeOptions, setQrCodeOptions] = useState({
     width: 300,
     height: 300,
-    data: "http://192.168.1.60:8006/redirect_resources", 
+    data: "http://82.29.56.112:8006/redirect_resources", 
     dotsOptions: { color: "#000000", type: "square" },
     cornersSquareOptions: { color: "#000000", type: "square" },
     cornersDotOptions: { color: "#000000", type: "square" },
@@ -55,7 +55,7 @@ const QRCodeStepper = () => {
  
       setQrCodeOptions(prevState => ({
         ...prevState,
-        data: `http://192.168.1.60:8006/redirect_resources/${uniqueCode}`,  // Establece el código único
+        data: `http://82.29.56.112:8006/redirect_resources/${uniqueCode}`,  // Establece el código único
       }));
     };
     fetchExistingCodes();
@@ -113,10 +113,10 @@ const handleSaveQrCode = async () => {
     const qrCodeData = {
       id: newId,
       url: qrData.url,
-      code: qrCodeOptions.data.replace("http://192.168.1.60:8006/redirect_resources/", ""),
+      code: qrCodeOptions.data.replace("http://82.29.56.112:8006/redirect_resources/", ""),
       data: qrData.type == 3 
         ? `WIFI:S:${qrData.ssid};T:${qrData.encryption};P:${qrData.password};;`
-        : `http://192.168.1.60:8006/redirect_resources/${newId}`,
+        : `http://82.29.56.112:8006/redirect_resources/${newId}`,
       id_qr_type: qrData.type,
       id_qr_tag: qrData.category && qrData.category.trim() !== "" ? qrData.category : 4,
       id_product: null,
@@ -141,7 +141,7 @@ const handleSaveQrCode = async () => {
           ...prevState,
           data: qrData.type == 3 
             ? `WIFI:S:${qrData.ssid};T:${qrData.encryption};P:${qrData.password};;`
-            : `http://192.168.1.60:8006/redirect_resources/${newId}`,
+            : `http://82.29.56.112:8006/redirect_resources/${newId}`,
         }));
 
         if (qrData.type == 3) {
