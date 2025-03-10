@@ -1,0 +1,14 @@
+# Configuración del servidor backend
+PORT=8006
+
+# Configuración de la base de datos MySQL
+DB_NAME=flashtag_db         # Nombre de la base de datos
+DB_USER=root                # Usuario de MySQL
+DB_PASSWORD=
+DB_HOST=db                  # Nombre del servicio definido en docker-compose.yml
+DB_PORT=3306                # Puerto de MySQL dentro del contenedor
+
+# Otras configuraciones
+DATABASE_URL=mysql://root:@db:3306/flashtag_db
+SECRET_KEY=your_secret_key
+DEBUG=True
